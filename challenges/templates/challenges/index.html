@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "challenges/challenges.css" %}">
+{% endblock %}
+    {% block page_title %}
+     ALL CHALLENGES
+    {% endblock %}
+
+    {% block content %}
+    {% include "challenges/includes/header.html" %}
+    <ul>
+        {% for day in days %}
+        <li><a href="{% url 'day-challenge' day %}">{{ day|title }}</a></li>
+        {% endfor %}
+
+    </ul>
+    {% endblock %}

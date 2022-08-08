@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+ {{ day_name|title }} Challenge
+{% endblock %} 
+
+{%block content%}
+{% include "challenges/includes/header.html" %}
+
+<h1>{{ day_name|title }} Challenge is - </h1>
+{% if text is not None %}
+ <h2>{{ text }}</h2>
+{% else %}
+ <p> File not found. </p>
+{% endif %}  
+{% endblock %}

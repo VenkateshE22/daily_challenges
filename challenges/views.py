@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, Http404
 from django.urls import reverse
-
+from django.template.loader import render_to_string
 daily_challenges = {
     "Monday": "Start learning about the basics of Python.",
     "Tuesday": "Study about Classes and Objects",
@@ -14,11 +14,9 @@ daily_challenges = {
 def index(request):
     list_items = ""
     days = list(daily_challenges.keys())
-
-    for day in days:
-        capitalized_day = day.capitalize()
-        day_path = reverse("day-challenge", args=[day])
-        list_items += f"<li><a href=\"{day_path}\">{capitalized_day}</a></li>"
+    return render(request, "challenges/index.html", {
+        "days": days
+    })
 
 
     response_data = f"<ul>{list_items}</ul>"
@@ -38,7 +36,9 @@ def daily_challenge_by_number(request, day):
 def daily_challenge(request, day):
     try:
         challenge_text = daily_challenges[day]
-        response_data = f"<h1>{challenge_text}</h1>"
-        return HttpResponse(response_data)
+        return render(request, "challenges/challenge.html", {
+            "text": challenge_text,
+            "day_name": day.capitalize()
+        })
     except:
-        return HttpResponseNotFound("<h1>This month is not supported!</h1>")
+        raise Http404()
